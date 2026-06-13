@@ -1,6 +1,6 @@
 # clbs-short-skills
 
-ショート動画（YouTube Shorts / TikTok / Instagram Reels）の **リサーチ** と **台本作成** を行う Claude Code 用スキル集です。
+ショート動画（YouTube Shorts / TikTok / Instagram Reels）の **リサーチ → 台本作成 → 縦型編集** を一気通貫で行う Claude Code 用スキル集（3兄弟）です。
 
 ## 収録スキル
 
@@ -17,25 +17,31 @@
 - 台本本体はナレーション＋演出タグ（`[ピクチャーN]` / `[スライドN]` / `[BロールN]` / `[カムリターン]`）＋ `<#0.8#>` 沈黙マーカー＋縦型素材注記（1:1 / 4:3 / 9:16）。
 - ショートは画面内の見出しテロップを焼かない方針（字幕は編集側に委ねる）。
 
+### 3. `clbs-short-edit` — 縦型ショート自動編集（9:16）
+- 顔出しアバター動画（音声入り）＋台本＋縦型素材（1:1スライド / 4:3ピクチャー / 9:16Bロール）から完成MP4（1080x1920）を書き出す。
+- **ジェットカット**: 無音を検出して詰める（ほぼ喋りっぱなしに）。
+- **テロップ焼き込み**: 顔の下（胸元上）に2行・大きめ・白＋黄・太い黒フチ。1句ずつ小分け表示。
+- 画像/スライドは中央付近に表示、テロップはその下（上端UIと被らない）。Bロールは全画面。
+- `_tools/build_short.py`（ffmpeg + Pillow）。日本語フォントは初回に自動コピー。
+
 ## 使い方
 
 各スキルフォルダを Claude Code のスキルディレクトリに置きます。
 
 ```bash
-cp -r clbs-short-research clbs-short-script ~/.claude/skills/
+cp -r clbs-short-research clbs-short-script clbs-short-edit ~/.claude/skills/
 ```
 
 - リサーチ: 「ショートリサーチ」「TikTokリサーチ」などで起動。
 - 台本: 「ショート台本」「ショート企画」などで起動。
-- 推奨フロー: `clbs-short-research`（リサーチ）→ `clbs-short-script`（台本）。
+- 編集: 「ショート編集」「縦型動画編集」などで起動。
+- 推奨フロー: `clbs-short-research`（リサーチ）→ `clbs-short-script`（台本）→ `clbs-short-edit`（編集）。
 
-## 依存（リサーチの自動取得を使う場合のみ）
-- `yt-dlp`, `ffmpeg`（`clbs-short-research/_tools/setup_tools.py` が未導入なら単体バイナリを自動取得）
+## 依存
+- リサーチの自動取得 / 編集: `yt-dlp`, `ffmpeg`（`setup_tools.py` が未導入なら単体バイナリを自動取得）
+- 編集のテロップ描画: `Pillow`（PIL）
 - 任意: `faster_whisper`（字幕の無い動画の冒頭発話起こし）
-- ※ 手動スクショ方式だけならインストール不要。
+- ※ リサーチを手動スクショ方式だけで使うならインストール不要。
 
 ## 方法論の出典
 `references/` 配下の方法論は、株式会社コンサルタントラボラトリーのショート動画講義資料・常識破壊パターン集を体系化したものです。
-
-## 備考
-縦型編集（テロップ焼き込み・素材差し込み）は別スキル（`clbs-short-edit`）が担当します（本リポジトリには含みません）。
