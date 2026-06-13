@@ -1,0 +1,7 @@
+# clbs-short-skills 依存パッケージ
+# 編集スキル（clbs-short-edit）のテロップ描画に必須
+Pillow>=10.0
+# リサーチの自動取得（clbs-short-research）。setup_tools.py が単体バイナリも自動取得します
+yt-dlp
+# 任意: 字幕の無い動画（TikTok等）の冒頭発話を文字起こしする場合
+faster-whisper
