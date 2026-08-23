@@ -5,3 +5,9 @@ Pillow>=10.0
 yt-dlp
 # 任意: 字幕の無い動画（TikTok等）の冒頭発話を文字起こしする場合
 faster-whisper
+
+# 編集スキル v3: テロップの文節分割（推奨・軽量）
+budoux
+# 任意: テロップ時刻の語精度アライメント（重い。無くても文字数比例で動作）
+stable-ts
+openai-whisper
