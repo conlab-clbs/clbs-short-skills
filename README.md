@@ -22,6 +22,7 @@ clbs-short-edit       縦型編集（ジェットカット＋素材差し込み�
 ### clbs-short-script — 企画〜台本
 - ジャンル不問の汎用台本スキル。順算思考（冒頭2秒フックから作る）／台本4要素／冒頭2秒フック5型／視聴維持率基準／守破離モデリング。
 - 台本本体は **ナレーション＋演出タグ**（`[ピクチャーN]`/`[スライドN]`/`[BロールN]`/`[カムリターン]`）＋ `<#0.8#>` 沈黙マーカー。**画面内の見出しテロップは焼かない**（字幕は編集側に委ねる）。
+- **日本語校正ゲート**（2026-11-19 追加）— `references/japanese_style.md` のルールで書き、同梱の `scripts/qa_script.py --role short --strict` で検査してから渡す。文頭メタコメント・許可取り・引用の倒置（「〜って。」）・見出しテロップの残存は FAIL、体言止め・同じ語尾の連続・段取りの文・回りくどい言い回しは WARN（`--strict` で FAIL）。「〜ですよ」「〜ですよね」は人間らしい語尾なので指摘しない。
 
 ### clbs-short-edit — 縦型編集（9:16）
 - 顔出しアバター動画（音声入り）＋台本＋縦型素材から **完成MP4（1080x1920）** を書き出す。
@@ -100,6 +101,8 @@ winget install Gyan.FFmpeg yt-dlp.yt-dlp
 cp -r clbs-short-research clbs-short-script clbs-short-edit ~/.claude/skills/
 ```
 
+更新するときは、このリポジトリで `git pull` してから同じコマンドで上書きします（自分で手を加えたファイルがあれば先に控えを取る）。
+
 ---
 
 ## 使い方
@@ -119,6 +122,10 @@ Claude Code に話しかけるだけで各スキルが起動します。推奨�
 ### 台本
 「ショート台本作って」など。`04_short_research_summary.yaml` を渡すと精度が上がります。
 - 出力: 企画5案 → 構成骨子 → `script.txt`（演出タグ付き）＋縦型素材プラン。
+- 検査（AIが自分で回す。手で打つ場合）:
+  ```bash
+  python3 ~/.claude/skills/clbs-short-script/scripts/qa_script.py shorts/YYYYMMDD_<title>/script.txt --role short --strict
+  ```
 
 ### 編集
 プロジェクトフォルダを用意します。
